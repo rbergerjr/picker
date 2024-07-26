@@ -48,7 +48,7 @@ namespace winrt::ReactNativePicker::implementation {
                 // When the drop down closes, move focus to the textbox inside ComboBox
                 // to prevent cases where focus can land on an outer flyout
                 // content and trigger an unexpected flyout dismissal
-                if (auto comboBox = sender.try_as<winrt::ComboBox>()) {
+                if (auto comboBox = sender.template try_as<winrt::ComboBox>()) {
                     winrt::FocusManager::TryFocusAsync(comboBox, winrt::FocusState::Programmatic);
                 }
             });
@@ -57,12 +57,12 @@ namespace winrt::ReactNativePicker::implementation {
         // https://github.com/microsoft/microsoft-ui-xaml/issues/2331    
         m_dropDownOpenedRevoker = this->DropDownOpened(winrt::auto_revoke,
             [](auto const& sender, auto const& /*args*/) {
-            auto comboBox = sender.as<xaml::Controls::ComboBox>();
+            auto comboBox = sender.template as<xaml::Controls::ComboBox>();
             if (comboBox.XamlRoot()) { // XamlRoot added in 19H1
-                auto comboBoxAsFrameworkElement = comboBox.XamlRoot().Content().try_as<xaml::FrameworkElement>();
+                auto comboBoxAsFrameworkElement = comboBox.XamlRoot().Content().template try_as<xaml::FrameworkElement>();
                 auto popups = xaml::Media::VisualTreeHelper::GetOpenPopupsForXamlRoot(comboBox.XamlRoot());
                 for (auto const& popup : popups) {
-                    popup.Child().as<xaml::FrameworkElement>().RequestedTheme(comboBoxAsFrameworkElement.ActualTheme());
+                    popup.Child().template as<xaml::FrameworkElement>().RequestedTheme(comboBoxAsFrameworkElement.ActualTheme());
                 }
             }
         });
