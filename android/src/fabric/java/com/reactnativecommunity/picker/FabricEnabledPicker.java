@@ -33,6 +33,11 @@ public abstract class FabricEnabledPicker extends AppCompatSpinner {
 
     @UiThread
     void updateState(int measuredHeight) {
+        // Bail if mStateWrapper is not set
+        if (mStateWrapper == null) {
+          return;
+        }
+
         float realHeight = PixelUtil.toDIPFromPixel(measuredHeight);
 
         // Check incoming state values. If they're already the correct value, return early to prevent
